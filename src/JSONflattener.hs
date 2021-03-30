@@ -29,14 +29,15 @@ data Value
   | Null
 -}
 
+suffix path k = if path == "" then k else path <> "." <> k <> "."
 
 eval :: Text -> (Data.Text.Internal.Text, Value) -> [(Data.Text.Internal.Text, Value)]
-eval path (k, Object hm) = concatMap (eval (path <> "." <> k)) $ HM.toList hm
+eval path (k, Object hm) = concatMap (eval (path `suffix` k)) (HM.toList hm)
 eval _    (_k, Array _)  = undefined
 eval path (k, v)         = [(path <> k, v)]
 
 evalH :: Value -> Value
-evalH (Object hm) = Object $ HM.fromList $ concatMap (eval "") $ HM.toList hm
+evalH (Object hm) = Object $ HM.fromList $ reverse $ concatMap (eval "") $ HM.toList hm
 evalH _ = undefined
 
 transform :: ByteString -> ByteString
