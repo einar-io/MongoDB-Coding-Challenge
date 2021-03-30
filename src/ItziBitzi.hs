@@ -25,17 +25,6 @@ type LazyText = Data.Text.Internal.Lazy.Text
 cfg :: Config
 cfg = defConfig {confCompare = compare}
 
-{- Aeson's datatype for JSON pasted here for convenience:
- 
-data Value
-  = Object Object
-  | Array Array
-  | String Text
-  | Number Scientific
-  | Bool Bool
-  | Null
--}
-
 -- Adds a dot in the path when we are nested.
 suffix :: (Eq a, Data.String.IsString a, Semigroup a) => a -> a -> a
 suffix path k = if path == "" then k else path <> "." <> k
@@ -46,17 +35,17 @@ eval path (k, Object hm) = concatMap (eval (path `suffix` k)) (HM.toList hm)
 eval _    (_k, Array _)  = undefined -- (Not handled according to Assumption 3)
 eval path (k, v)         = [(path `suffix` k, v)]
 
--- The helper function to kick it all off and eventually
--- wrap it all back up in a singleton object.
+-- The helper function to kick it all off and eventually wrap it all back up in
+-- a singleton object.
 evalH :: Value -> Value
 evalH (Object hm) = Object $ HM.fromList $ reverse $ concatMap (eval "") $ HM.toList hm
 evalH _ = undefined
 
--- The following mostly just changes the representation of the object.
--- It is necessary to get to Aeson's internal representatoin, that we
--- wanted to manipulate in `eval`.
+-- The following three functions mostly just changes the representation of the
+-- object.  It is necessary to get to Aeson's internal representation, that we
+-- want to manipulate in `eval`.
 transform :: ByteString -> ByteString
-transform = (encodePretty' cfg) . evalH . fromJust . decode
+transform = encodePretty' cfg . evalH . fromJust . decode
 
 flattenLazy :: LazyText -> LazyText
 flattenLazy = E.decodeUtf8 . transform . E.encodeUtf8
@@ -64,7 +53,7 @@ flattenLazy = E.decodeUtf8 . transform . E.encodeUtf8
 flatten :: String -> String
 flatten = L.unpack . flattenLazy . L.pack
 
--- This function returns the object provided on STDIN
--- in its flattened form on STDOUT.
+-- This function returns the object provided on STDIN in its flattened form on
+-- STDOUT.
 interact :: IO ()
 interact = T.interact flattenLazy

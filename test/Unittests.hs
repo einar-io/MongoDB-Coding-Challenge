@@ -24,6 +24,9 @@ tests = testGroup "All"
     , testCase "Handle a `null`" $ actual5 @?= expected5
     , testCase "Clashing keys" $ actual6 @?= expected6
     , testCase "Nested empty object" $ actual7 @?= expected7
+    , testCase "Nested numbers" $ actual8 @?= expected8
+    , testCase "Nested booleans" $ actual9 @?= expected9
+    , testCase "Nested string" $ actual10 @?= expected10
   ]
 
 -- The test from the challenge
@@ -125,3 +128,43 @@ expected7 = [r|{}|]
 actual7 :: String
 actual7 = flatten test7
 
+
+-- "Numbers"
+test8 :: String
+test8 = [r|{"n": {"e": 2.7, "pi": 3.14}}|]
+
+expected8 :: String
+expected8 = [r|{
+    "n.e": 2.7,
+    "n.pi": 3.14
+}|]
+
+actual8 :: String
+actual8 = flatten test8
+
+-- Bools
+test9 :: String
+test9 = [r|{"Bools": {"true": true, "false": false}}|]
+
+-- Note the lexicographic ordering
+expected9 :: String
+expected9 = [r|{
+    "Bools.false": false,
+    "Bools.true": true
+}|]
+
+actual9 :: String
+actual9 = flatten test9
+
+
+-- "Simple String"
+test10 :: String
+test10 = [r|{"ThisIs": {"TheEnd": "Thank you for reading through my tests!"}}|]
+
+expected10 :: String
+expected10 = [r|{
+    "ThisIs.TheEnd": "Thank you for reading through my tests!"
+}|]
+
+actual10 :: String
+actual10 = flatten test10
