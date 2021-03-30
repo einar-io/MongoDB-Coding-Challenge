@@ -1,47 +1,52 @@
 # MongoDB-Coding-Challenge
-Date:   2021-03-30
-Author: Einar Rasmussen
+Date:   2021-03-30  
+Author: Einar Rasmussen  
 Email:  einar@einar.io
 
-The solution is implemented in Haskell.
+Welcome to my first ever coding challenge solution.
+It is called *ItziBitzi* because it is not humongous.
+ItziBitzi is implemented in Haskell.
 
-## Installation
+## Installation and tool chain
 To install Haskell on Ubuntu Linux, run:
 `$ sudo apt-get install haskell-platform`
 
-The you can clone this repository:
+You can then clone my repository:
 `git clone git@github.com:einar-io/MongoDB-Coding-Challenge.git`
 
-## Tool chain
-[stack](https://docs.haskellstack.org/en/stable/README/) as project manager.
+I use [stack](https://docs.haskellstack.org/en/stable/README/) as project manager,
+so you can build the project by `stack build` and run and interactive session
+with `stack run`.  Here you can type in JSON objects such as 
+`{"a": {"b": {"c": null}}}`
+followed by enter or Ctrl-D (end input).  You should then see flattened object.
+You can type a new one or press Ctrl-C to terminate.
 
+For macOS these instructions may be [helpful](https://docs.haskellstack.org/en/stable/install_and_upgrade/)
 
 ## Assumptions
 During the challenge will state any further assumptions explicitly here:
 
-1. You want me to be productive, so I use the tools I use most.
+1. You want me to be productive, so I use the tools I would usually use for
+   these types of problems.
 2. You want me document my thought process and challenges I encounter.
 3. You want me document my thought process.
 
 
 ## Analysis
-We essentially want a JSON object flattening operation.
-This can be implemented by a recursive `eval` function
-like the ones used for interpreters where we pass
-the current path as state to serve as a prefix.
-We can the start the process with a helper function
-`evalH`, that calls `eval` with an empty prefix.
+We essentially want a flattening operation for  JSON objects.  This can be
+implemented by a recursive `eval` function like the ones used for interpreters.
+We can pass the current path as a state to serve as a prefix.  We can start the
+process with a nonrecursive helper function `evalH`, that calls `eval` with an
+empty path.
 
-While we can generate the correct (semantically speaking) objects,
-we must consider two additional things, if we want to pass
-the provided test: Pretty printing and order.
-The former is easy after reducing the object to one level of nesting.
-The latter, however, posses a fundamental problem:
-Order is likely not preserved in the underlying HashMap used by
-Aeson, and there is not easy way around it.  
-To finish this challenge in reasonable time, I decide to
-sort the keys in lexicographic order.  This should
-be enough to make the provided test pass.
+While we can generate the correct (semantically speaking) objects, we must
+consider two additional things, if we want to pass the provided test: Pretty
+printing and order.  (1) is easy after reducing the object to one level
+of nesting.  (2) however, reveals a fundamental problem: Order is likely
+not preserved in the underlying HashMap used by Aeson, and there is not easy
+way around it.  To finish this challenge in reasonable time, I decide to sort
+the keys in lexicographic order.  This should be enough to make the provided
+test pass.
 
 
 ## Limitations

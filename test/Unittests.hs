@@ -46,7 +46,7 @@ expected1 = [r|{
 }|]
 
 actual1 :: String
-actual1 = flattenString test1
+actual1 = flatten test1
 
 
 -- The handling the empty object
@@ -57,7 +57,7 @@ expected2 :: String
 expected2 = [r|{}|]
 
 actual2:: String
-actual2 = flattenString test2
+actual2 = flatten test2
 
 
 -- The handling three levels of nesting
@@ -70,7 +70,7 @@ expected3 = [r|{
 }|]
 
 actual3 :: String
-actual3 = flattenString test3
+actual3 = flatten test3
 
 
 -- Sibling objects
@@ -84,7 +84,7 @@ expected4 = [r|{
 }|]
 
 actual4 :: String
-actual4 = flattenString test4
+actual4 = flatten test4
 
 
 -- Null
@@ -97,7 +97,7 @@ expected5 = [r|{
 }|]
 
 actual5 :: String
-actual5 = flattenString test5
+actual5 = flatten test5
 
 
 -- Clashing keys.
@@ -112,7 +112,7 @@ expected6 = [r|{
 }|]
 
 actual6 :: String
-actual6 = flattenString test6
+actual6 = flatten test6
 
 
 -- "Nested empty object"
@@ -123,5 +123,5 @@ expected7 :: String
 expected7 = [r|{}|]
 
 actual7 :: String
-actual7 = flattenString test7
+actual7 = flatten test7
 

@@ -1,9 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module ItziBitzi
-    ( loop
+    ( ItziBitzi.interact
     , flatten
-    , flattenString
     ) where
 
 import Data.Aeson
@@ -22,13 +21,12 @@ import qualified Data.Text.Internal.Lazy (Text)
 type Text = Data.Text.Internal.Text
 type LazyText = Data.Text.Internal.Lazy.Text
 
--- Sort the keys
+-- Pretty printer configuration to sort the keys.
 cfg :: Config
 cfg = defConfig {confCompare = compare}
 
-{-
- - Aeson's datatype for JSON:
- -
+{- Aeson's datatype for JSON pasted here for convenience:
+ 
 data Value
   = Object Object
   | Array Array
@@ -38,27 +36,35 @@ data Value
   | Null
 -}
 
+-- Adds a dot in the path when we are nested.
 suffix :: (Eq a, Data.String.IsString a, Semigroup a) => a -> a -> a
 suffix path k = if path == "" then k else path <> "." <> k
 
+-- The object destructuring and key rewrite happens here.
 eval :: Text -> (Data.Text.Internal.Text, Value) -> [(Data.Text.Internal.Text, Value)]
 eval path (k, Object hm) = concatMap (eval (path `suffix` k)) (HM.toList hm)
-eval _    (_k, Array _)  = undefined
+eval _    (_k, Array _)  = undefined -- (Not handled according to Assumption 3)
 eval path (k, v)         = [(path `suffix` k, v)]
 
+-- The helper function to kick it all off and eventually
+-- wrap it all back up in a singleton object.
 evalH :: Value -> Value
 evalH (Object hm) = Object $ HM.fromList $ reverse $ concatMap (eval "") $ HM.toList hm
 evalH _ = undefined
 
+-- The following mostly just changes the representation of the object.
+-- It is necessary to get to Aeson's internal representatoin, that we
+-- wanted to manipulate in `eval`.
 transform :: ByteString -> ByteString
 transform = (encodePretty' cfg) . evalH . fromJust . decode
 
-flatten :: LazyText -> LazyText
-flatten = E.decodeUtf8 . transform . E.encodeUtf8
+flattenLazy :: LazyText -> LazyText
+flattenLazy = E.decodeUtf8 . transform . E.encodeUtf8
 
-flattenString :: String -> String
-flattenString = L.unpack . flatten . L.pack
+flatten :: String -> String
+flatten = L.unpack . flattenLazy . L.pack
 
-loop :: IO ()
-loop = T.interact flatten
-
+-- This function returns the object provided on STDIN
+-- in its flattened form on STDOUT.
+interact :: IO ()
+interact = T.interact flattenLazy

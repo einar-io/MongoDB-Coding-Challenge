@@ -1,6 +1,6 @@
 module Main where
 
-import ItziBitzi
+import ItziBitzi (interact)
 
 main :: IO ()
-main = loop
+main = ItziBitzi.interact
