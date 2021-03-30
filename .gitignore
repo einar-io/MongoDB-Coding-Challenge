@@ -1,2 +1,4 @@
 .stack-work/
 *~
+ChangeLog.md
+stack.yaml.lock
