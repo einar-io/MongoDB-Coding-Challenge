@@ -11,11 +11,10 @@ $ sudo apt-get install haskell-platform
 
 
 ## Assumption
-During the challenge will state any assumptions explicitly here:
+During the challenge will state any further assumptions explicitly here:
 
 0. You want me to be productive, so I use the tools I use most.
 1. YOu want me document my thought process.
-2. You want me to use a library for parsing JSON to be productive.
 
 
 ## Analysis
@@ -35,5 +34,7 @@ We can the start the process with a helper function
 12:08 Repo in place
 12:38 Written control-flow outline
       Simple echo service works
-      Found a suitable JSON lib (aeson)
+      Found a suitable JSON lib (Aeson)
 12:55 Resolved issue with JSON lib
+15:00 Finally steared clear of some conversion issues between standard Strings
+      and the internal text representation that Aeson uses.
