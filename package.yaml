@@ -28,7 +28,7 @@ dependencies:
 - tasty-hunit
 - raw-strings-qq
 - bytestring
-
+- aeson-pretty
 
 library:
   source-dirs: src

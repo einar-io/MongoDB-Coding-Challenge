@@ -3,22 +3,31 @@
 module JSONflattener
     ( loop
     , flatten
+    , flattenString
     ) where
 
 import Data.Aeson
+import Data.Aeson.Encode.Pretty
 import Data.Maybe
 
 import Data.ByteString.Lazy.Internal (ByteString)
+import qualified Data.String
+import qualified Data.Text.Lazy as L
 import qualified Data.Text.Lazy.IO as T
-import qualified Data.Text.Lazy.Encoding as T
+import qualified Data.Text.Lazy.Encoding as E
 import qualified Data.HashMap.Strict as HM
 import qualified Data.Text.Internal (Text)
 import qualified Data.Text.Internal.Lazy (Text)
 
 type Text = Data.Text.Internal.Text
 type LazyText = Data.Text.Internal.Lazy.Text
+
+-- Sort the keys
+cfg :: Config
+cfg = defConfig {confCompare = compare}
+
 {-
- - Aeson's datatype:
+ - Aeson's datatype for JSON:
  -
 data Value
   = Object Object
@@ -29,6 +38,7 @@ data Value
   | Null
 -}
 
+suffix :: (Eq a, Data.String.IsString a, Semigroup a) => a -> a -> a
 suffix path k = if path == "" then k else path <> "." <> k <> "."
 
 eval :: Text -> (Data.Text.Internal.Text, Value) -> [(Data.Text.Internal.Text, Value)]
@@ -41,17 +51,14 @@ evalH (Object hm) = Object $ HM.fromList $ reverse $ concatMap (eval "") $ HM.to
 evalH _ = undefined
 
 transform :: ByteString -> ByteString
-transform = encode . evalH . fromJust . decode
+transform = (encodePretty' cfg) . evalH . fromJust . decode
 
 flatten :: LazyText -> LazyText
-flatten = T.decodeUtf8 . transform . T.encodeUtf8
+flatten = E.decodeUtf8 . transform . E.encodeUtf8
 
-{-
-loop :: IO ()
-loop = do
-  input <- getContents
-  T.putStr $ flatten input
--}
+flattenString :: String -> String
+flattenString = L.unpack . flatten . L.pack
 
 loop :: IO ()
 loop = T.interact flatten
+
