@@ -2,23 +2,24 @@
 
 module JSONflattener
     ( loop
+    , flatten
     ) where
 
-
-import GHC.Exts
-import GHC.Generics
 import Data.Aeson
 import Data.Maybe
 
-
-import Data.Monoid ((<>))
-
-import qualified Data.Text.Lazy as T
+import Data.ByteString.Lazy.Internal (ByteString)
 import qualified Data.Text.Lazy.IO as T
 import qualified Data.Text.Lazy.Encoding as T
 import qualified Data.HashMap.Strict as HM
+import qualified Data.Text.Internal (Text)
+import qualified Data.Text.Internal.Lazy (Text)
 
+type Text = Data.Text.Internal.Text
+type LazyText = Data.Text.Internal.Lazy.Text
 {-
+ - Aeson's datatype:
+ -
 data Value
   = Object Object
   | Array Array
@@ -29,7 +30,7 @@ data Value
 -}
 
 
---eval :: String -> (String, Value) -> (String,Value)
+eval :: Text -> (Data.Text.Internal.Text, Value) -> [(Data.Text.Internal.Text, Value)]
 eval path (k, Object hm) = concatMap (eval (path <> "." <> k)) $ HM.toList hm
 eval _    (_k, Array _)  = undefined
 eval path (k, v)         = [(path <> k, v)]
@@ -38,11 +39,18 @@ evalH :: Value -> Value
 evalH (Object hm) = Object $ HM.fromList $ concatMap (eval "") $ HM.toList hm
 evalH _ = undefined
 
--- flatten :: Maybe String -> String
-flatten a = T.decodeUtf8 $ T.encodeUtf8 a
+transform :: ByteString -> ByteString
+transform = encode . evalH . fromJust . decode
 
+flatten :: LazyText -> LazyText
+flatten = T.decodeUtf8 . transform . T.encodeUtf8
+
+{-
 loop :: IO ()
 loop = do
-  input <- T.getContents
+  input <- getContents
   T.putStr $ flatten input
-  return ()
+-}
+
+loop :: IO ()
+loop = T.interact flatten

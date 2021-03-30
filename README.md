@@ -38,3 +38,7 @@ We can the start the process with a helper function
 12:55 Resolved issue with JSON lib
 15:00 Finally steared clear of some conversion issues between standard Strings
       and the internal text representation that Aeson uses.
+15:13 Setting up tests.
+15:50 Testing also displays challenges with text representation.  Taking a short break.
+16:08 Back from break.
+17:09 Fixed type conversion in the tests.
