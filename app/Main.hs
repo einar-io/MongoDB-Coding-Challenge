@@ -1,6 +1,6 @@
 module Main where
 
-import JSONflattener
+import ItziBitzi
 
 main :: IO ()
 main = loop

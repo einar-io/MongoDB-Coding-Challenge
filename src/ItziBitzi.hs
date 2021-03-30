@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module JSONflattener
+module ItziBitzi
     ( loop
     , flatten
     , flattenString
@@ -39,12 +39,12 @@ data Value
 -}
 
 suffix :: (Eq a, Data.String.IsString a, Semigroup a) => a -> a -> a
-suffix path k = if path == "" then k else path <> "." <> k <> "."
+suffix path k = if path == "" then k else path <> "." <> k
 
 eval :: Text -> (Data.Text.Internal.Text, Value) -> [(Data.Text.Internal.Text, Value)]
 eval path (k, Object hm) = concatMap (eval (path `suffix` k)) (HM.toList hm)
 eval _    (_k, Array _)  = undefined
-eval path (k, v)         = [(path <> k, v)]
+eval path (k, v)         = [(path `suffix` k, v)]
 
 evalH :: Value -> Value
 evalH (Object hm) = Object $ HM.fromList $ reverse $ concatMap (eval "") $ HM.toList hm

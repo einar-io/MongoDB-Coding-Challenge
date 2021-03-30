@@ -1,14 +1,13 @@
 name:                MongoDB-Coding-Challenge
 version:             0.1.0.0
-github:              "githubuser/MongoDB-Coding-Challenge"
-license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2021 Author name here"
+github:              "einar-io/MongoDB-Coding-Challenge"
+license:             MIT
+author:              "Einar Rasmussen"
+maintainer:          "einar@einar.io"
+copyright:           "2021 Einar Rasmussen"
 
 extra-source-files:
 - README.md
-- ChangeLog.md
 
 # Metadata used when publishing your package
 # synopsis:            Short description of your package
@@ -48,7 +47,7 @@ executables:
 
 tests:
   MongoDB-Coding-Challenge-test:
-    main:                Spec.hs
+    main:                Unittests.hs
     source-dirs:         test
     ghc-options:
     - -threaded

@@ -51,7 +51,8 @@ be enough to make the provided test pass.
 
 
 ## Testing
-`stack test` builds and runs the unit tests.
+`stack build` builds the project.
+`stack test` builds _and_ runs the unit tests.
 
 
 ### Timeline
@@ -69,7 +70,13 @@ be enough to make the provided test pass.
 17:09 Fixed type conversion in the tests.
 18:10 Own tests are passing.  A fundamental problem is that order may not be preserved.
 18:28 Added limitations to this `README.md`.
+18:58 My three working tests now pass.  I will add more tests and then wrap up.
 
-## What did I learn in this challenge?
-1. 
 
+## The Takeaway
+What did I learn in this challenge?
+
+1.  Working with arbitrarily shaped JSON objects in Haskell is not super convenient.
+    If I had to do it over again, I would probably have chosen JavaScript.
+2.  Working with internal data representation of libraries, you are not familiar with
+    is too time consuming to work well in coding challenges.

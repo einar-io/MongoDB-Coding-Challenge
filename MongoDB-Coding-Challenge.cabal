@@ -7,25 +7,24 @@ cabal-version: 1.12
 name:           MongoDB-Coding-Challenge
 version:        0.1.0.0
 description:    Please see the README on GitHub at <https://github.com/githubuser/MongoDB-Coding-Challenge#readme>
-homepage:       https://github.com/githubuser/MongoDB-Coding-Challenge#readme
-bug-reports:    https://github.com/githubuser/MongoDB-Coding-Challenge/issues
-author:         Author name here
-maintainer:     example@example.com
-copyright:      2021 Author name here
-license:        BSD3
+homepage:       https://github.com/einar-io/MongoDB-Coding-Challenge#readme
+bug-reports:    https://github.com/einar-io/MongoDB-Coding-Challenge/issues
+author:         Einar Rasmussen
+maintainer:     einar@einar.io
+copyright:      2021 Einar Rasmussen
+license:        MIT
 license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md
-    ChangeLog.md
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/MongoDB-Coding-Challenge
+  location: https://github.com/einar-io/MongoDB-Coding-Challenge
 
 library
   exposed-modules:
-      JSONflattener
+      ItziBitzi
   other-modules:
       Paths_MongoDB_Coding_Challenge
   hs-source-dirs:
@@ -65,7 +64,7 @@ executable MongoDB-Coding-Challenge-exe
 
 test-suite MongoDB-Coding-Challenge-test
   type: exitcode-stdio-1.0
-  main-is: Spec.hs
+  main-is: Unittests.hs
   other-modules:
       Paths_MongoDB_Coding_Challenge
   hs-source-dirs:
