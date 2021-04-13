@@ -3,6 +3,21 @@ Date:   2021-03-30
 Author: Einar Rasmussen  
 Email:  einar@einar.io
 
+
+*** Update 2021-04-13 ***
+After having solved this challenge in Haskell, 
+I acknowledged that I should have rather implemented it in JavaScript.
+
+So I did.
+
+The [JavaScript](https://github.com/einar-io/MongoDB-Coding-Challenge.JS)
+version is also available on my homepage where you 
+can [try it out right now!](https://einar.io/code/MongoDB-Coding-Challenge.JS/)
+
+--Einar
+*** End of update ***
+
+
 Welcome to my first ever coding challenge solution.
 It is called *ItziBitzi* because it is not humongous.
 ItziBitzi is implemented in Haskell and uses the Aeson JSON-parser library.
