@@ -4,7 +4,8 @@ Author: Einar Rasmussen
 Email:  einar@einar.io
 
 
-*** Update 2021-04-13 ***
+**Update 2021-04-14**
+
 After having solved this challenge in Haskell, 
 I acknowledged that I should have rather implemented it in JavaScript.
 
@@ -15,7 +16,8 @@ version is also available on my homepage where you
 can [try it out right now!](https://einar.io/code/MongoDB-Coding-Challenge.JS/)
 
 --Einar
-*** End of update ***
+
+**End of update**
 
 
 Welcome to my first ever coding challenge solution.
